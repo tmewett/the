@@ -1,0 +1,140 @@
+#!/usr/bin/env fish
+
+function hc_state_changed -a key value
+    if test ! -e $hc_state/$key
+        return 0
+    end
+    read -z last_value < $hc_state/$key
+    if test $value = $last_value
+        return 1
+    end
+    return 0
+end
+
+function hc_doing -a message
+    echo $message
+    set -q _hc_doing
+end
+
+function hc_state_save -a key value
+    echo -n $value > $hc_state/$key
+end
+
+function hc_safe_symlink -a target path
+    if test -L $path
+        readlink -z $path | read -z existing_target
+        if test $target != $existing_target
+            if hc_doing "removing existing symlink $path"
+                rm $path
+            else
+                ls -l $path
+            end
+        else
+            return 0
+        end
+    else if test -e $path
+        if hc_doing "removing existing file/directory $path"
+            rm -r $path
+        else
+            echo "==="
+            ls -l $path
+            echo "==="
+        end
+    end
+    hc_doing "creating $path -> $target"
+    and mkdir -p (dirname $path)
+    and ln -sT $target $path
+end
+
+function hc_safe_symlink_native
+    MSYS="$MSYS winsymlinks:nativestrict" hc_safe_symlink $argv
+end
+
+function hc_safe_rm_symlink -a link
+    if test -L $link && hc_doing "removing $link"
+        rm $link
+    end
+end
+
+function hc_sudo_cp -a src dest
+    if test ! -e $src && hc_doing "copying $src -> $dest (with sudo)"
+        sudo mkdir -p (basename $src)
+        sudo cp -T $src $dest
+    end
+end
+
+function hc_set_state_by
+    if hc_state_changed $argv[1..2]
+        $argv[3..]
+        and set -q _hc_doing
+        and hc_state_save $argv[1..2]
+    end
+end
+
+set hc_state ~/.config/home-configure/state
+
+mkdir -p $hc_state
+
+function packages_pacman_get_explicitly_installed; pacman -Qeq; end
+function packages_pacman_get_installed; pacman -Qq; end
+function packages_pacman_mark_implicit; pacman -D --asdeps $argv; end
+function packages_pacman_mark_explicit; pacman -D --asexplicit $argv; end
+function packages_pacman_install; pacman -S $argv; end
+function packages_apt_get_explicitly_installed; apt-mark showmanual; end
+function packages_apt_get_installed; dpkg-query -f '${Package}\n' -W; end
+function packages_apt_mark_implicit; sudo apt-mark auto $argv; end
+function packages_apt_mark_explicit; sudo apt-mark manual $argv; end
+function packages_apt_install; sudo apt install $argv; end
+function packages_apply -a manager
+    if not set -q _hc_doing
+        set sorted_pkgs (printf '%s\n' $argv[2..] | sort)
+        if not hc_state_changed pkgapply_$manager $sorted_pkgs
+            return
+        end
+    else
+        set var_name _packages_{$manager}_apply_command
+        eval "$$var_name"
+        return
+    end
+    set selections $argv[2..]
+    set explicit (packages_{$manager}_get_explicitly_installed)
+    or return 1
+    set installed (packages_{$manager}_get_installed)
+    or return 1
+    # installed n selections \ explicit
+    for pkg in $installed
+        if contains $pkg $selections; and not contains $pkg $explicit
+            set -a make_explicit $pkg
+        end
+    end
+    if set -q make_explicit
+        hc_doing "($manager) marking as wanted: $make_explicit"
+        set -ga _packages_{$manager}_apply_command "packages_$manager""_mark_explicit $make_explicit;"
+    end
+    # explicit \ selections
+    for pkg in $explicit
+        if not contains $pkg $selections
+            set -a make_implicit $pkg
+        end
+    end
+    if set -q make_implicit
+        hc_doing "($manager) marking as dependency: $make_implicit"
+        set -ga _packages_{$manager}_apply_command "packages_$manager""_mark_implicit $make_implicit;"
+    end
+    # selections \ installed
+    for pkg in $selections
+        if not contains $pkg $installed
+            set -a install $pkg
+        end
+    end
+    if set -q install
+        hc_doing "($manager) installing $install"
+        set -ga _packages_{$manager}_apply_command "packages_$manager""_install $install;"
+    end
+end
+
+source $my_config_dir/home-configuration.fish
+echo
+test "$(read -P "perform the above actions? (y/N) ")" = "y" || exit 0
+set _hc_doing
+source $my_config_dir/home-configuration.fish

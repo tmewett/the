@@ -1,0 +1,110 @@
+[
+    {
+        "key": "shift+alt+q",
+        "command": "extension.filterTextInplace",
+        "args": { "cmd": "fmt -w 80" }
+    },
+    {
+        "key": "ctrl+shift+j",
+        "command": "editor.action.joinLines",
+        "when": "editorTextFocus"
+    },
+    {
+        "key": "ctrl+b",
+        "command": "-dance.select.vertically",
+        "when": "editorTextFocus && dance.mode == 'normal'"
+    },
+    {
+        "key": "shift+space",
+        "command": "editor.action.wordHighlight.trigger",
+        "when": "editorTextFocus && dance.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+f",
+        "command": "-dance.select.vertically",
+        "when": "editorTextFocus && dance.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+f",
+        "command": "-dance.select.vertically",
+        "when": "editorTextFocus && dance.mode == 'insert'"
+    },
+    {
+        "key": "up",
+        "command": "-selectPrevSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+    },
+    {
+        "key": "down",
+        "command": "-selectNextSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+    },
+    {
+        "key": "ctrl+v",
+        "command": "-dance.modes.set.temporarily.insert",
+        "when": "editorTextFocus && dance.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+v",
+        "command": "-dance.modes.set.temporarily.normal",
+        "when": "editorTextFocus && dance.mode == 'insert'"
+    },
+    {
+        "key": "ctrl+r",
+        "command": "-dance.edit.selectRegister-insert",
+        "when": "editorTextFocus && dance.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+r",
+        "command": "-dance.edit.selectRegister-insert",
+        "when": "editorTextFocus && dance.mode == 'insert'"
+    },
+    {
+        "key": "shift+alt+down",
+        "command": "editor.action.copyLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+shift+alt+down",
+        "command": "-editor.action.copyLinesDownAction",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+k s",
+        "command": "-workbench.action.files.saveWithoutFormatting"
+    },
+    {
+        "key": "ctrl+k s",
+        "command": "workbench.action.files.saveFiles"
+    },
+    {
+        "key": "ctrl+d",
+        "command": "-dance.select.vertically",
+        "when": "editorTextFocus && dance.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+d",
+        "command": "-dance.select.vertically",
+        "when": "editorTextFocus && dance.mode == 'insert'"
+    },
+    {
+        "key": "escape",
+        "command": "workbench.action.files.save",
+        "when": "editorTextFocus && dance.mode == 'normal'"
+    },
+    {
+        "key": "alt+z",
+        "command": "-dance.selections.restore.withCurrent",
+        "when": "editorTextFocus && dance.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+tab",
+        "command": "jumpToNextSnippetPlaceholder",
+        "when": "hasNextTabstop && inSnippetMode && textInputFocus"
+    },
+    {
+        "key": "tab",
+        "command": "-jumpToNextSnippetPlaceholder",
+        "when": "hasNextTabstop && inSnippetMode && textInputFocus"
+    }
+]

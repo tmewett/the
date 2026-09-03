@@ -1,0 +1,60 @@
+(defsrc)
+
+(deflayermap (default)
+  esc  caps
+  caps (tap-hold-press 0 200 esc (layer-while-held triangle)))
+
+(deflayermap (qwangle)
+  ;; so we can switch layers on go60
+  f13  (tap-hold-press 0 200 esc (layer-while-held triangle))
+  caps (tap-hold-press 0 200 esc (layer-while-held triangle))
+  nubs z
+  z    x
+  x    c
+  c    v
+  v    b
+  b    nubs)
+
+(deflayermap (go60)
+  f13  (tap-hold-press 0 200 esc (layer-while-held triangle))
+  f14  (tap-hold-press 0 200 nubs (layer-while-held pentagon))
+  esc  caps)
+
+(deflayermap (triangle)
+  e    bck
+  r    fwd
+  y    C-del
+  u    C-left
+  i    C-bspc
+  o    C-rght
+  p    del
+  esc  lrld
+  d    ctl
+  f    shft
+  h    left
+  j    down
+  k    up
+  l    rght
+  ;    bspc
+  apos (macro down ret)
+  ret  (macro ret up end)
+  n    home
+  m    pgdn
+  ,    pgup
+  .    end
+  /    (macro C-l end)
+  spc  ret)
+
+(deflayermap (pentagon)
+  1    f1
+  2    f2
+  3    f3
+  4    f4
+  5    f5
+  6    f6
+  7    f7
+  8    f8
+  9    f9
+  0    f10
+  min  f11
+  eql  f12)

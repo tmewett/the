@@ -1,0 +1,12 @@
+cmd open &o "$f"
+map <c-n> &fish -c 't lf'
+map + $chmod +x "$fx"
+map Dp delete
+map o push &touch<space>
+map O push &mkdir<space>
+map R reload
+map T &fish -c t
+map xe $x vscodium "$f"
+map xg &t w lazygit
+set hidden
+set mouse

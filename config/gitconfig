@@ -1,0 +1,18 @@
+[core]
+	autocrlf = input
+[fetch]
+	prune = true
+[gui]
+	stageuntracked = no
+	commitmsgwidth = 72
+	spellingdictionary = none
+	geometry = 1280x720 300 400
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[push]
+	default = upstream
+[rebase]
+	abbreviateCommands = true
+	autoSquash = true
