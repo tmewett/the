@@ -1,5 +1,3 @@
-source ~/home-configuration.fish
-
 if not set -q APPDATA; set APPDATA ~/.config; end
 if not set -q USERPROFILE; set USERPROFILE ~; end
 
@@ -10,24 +8,24 @@ else
 end
 
 if not set -q MSYSTEM
-    hc_safe_symlink $my_config_dir/exec-nopasswd $HOME/exec-nopasswd
+    idem_symlink $my_config_dir/exec-nopasswd $HOME/exec-nopasswd
 end
 
-hc_safe_symlink_native $my_config_dir/settings.json $vscode_config_dir/User/settings.json
-hc_safe_symlink_native $my_config_dir/keybindings.json $vscode_config_dir/User/keybindings.json
-hc_safe_symlink_native $my_config_dir/snippets $vscode_config_dir/User/snippets
+idem_symlink_native $my_config_dir/settings.json $vscode_config_dir/User/settings.json
+idem_symlink_native $my_config_dir/keybindings.json $vscode_config_dir/User/keybindings.json
+idem_symlink_native $my_config_dir/snippets $vscode_config_dir/User/snippets
 
-hc_safe_symlink_native $my_config_dir/lazygit/config.yml ~/.config/lazygit/config.yml
+idem_symlink_native $my_config_dir/lazygit/config.yml ~/.config/lazygit/config.yml
 
-hc_safe_symlink $my_config_dir/fish/functions ~/.config/fish/functions
+idem_symlink $my_config_dir/fish/functions ~/.config/fish/functions
 
 # ControlMaster is broken on Windows
 if not set -q MSYSTEM
-    hc_safe_symlink $my_config_dir/ssh_config ~/.ssh/config
+    idem_symlink $my_config_dir/ssh_config ~/.ssh/config
 end
 
 if set -q MSYSTEM
-    hc_safe_symlink_native $my_config_dir/keymapper.conf $USERPROFILE/keymapper.conf
+    idem_symlink_native $my_config_dir/keymapper.conf $USERPROFILE/keymapper.conf
 else
-    hc_safe_symlink $my_config_dir/keymapper.conf ~/.config/keymapper.conf
+    idem_symlink $my_config_dir/keymapper.conf ~/.config/keymapper.conf
 end
