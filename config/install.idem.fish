@@ -8,20 +8,20 @@ else
 end
 
 if not set -q MSYSTEM
-    idem_symlink $my_config_dir/exec-nopasswd $HOME/exec-nopasswd
+    idem_symlink $the_dir/config/exec-nopasswd $HOME/exec-nopasswd
 end
 
-idem_symlink_native $my_config_dir/settings.json $vscode_config_dir/User/settings.json
-idem_symlink_native $my_config_dir/keybindings.json $vscode_config_dir/User/keybindings.json
-idem_symlink_native $my_config_dir/snippets $vscode_config_dir/User/snippets
+idem_symlink_native $the_dir/config/settings.json $vscode_config_dir/User/settings.json
+idem_symlink_native $the_dir/config/keybindings.json $vscode_config_dir/User/keybindings.json
+idem_symlink_native $the_dir/config/snippets $vscode_config_dir/User/snippets
 
-idem_symlink_native $my_config_dir/lazygit-config.yml ~/.config/lazygit/config.yml
+idem_symlink_native $the_dir/config/lazygit-config.yml ~/.config/lazygit/config.yml
 
 idem_rm_symlink ~/.config/fish/functions
 
 # ControlMaster is broken on Windows
 if not set -q MSYSTEM
-    idem_symlink $my_config_dir/ssh_config ~/.ssh/config
+    idem_symlink $the_dir/config/ssh_config ~/.ssh/config
 end
 
 if set -q MSYSTEM

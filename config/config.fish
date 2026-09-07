@@ -1,9 +1,5 @@
 # My portable config. System-specific goes in the real config.fish
 
-if not set -q my_config_dir
-    echo "Warning: my_config_dir is not set"
-end
-
 set -x MSYS2_ENV_CONV_EXCL "$MSYS2_ENV_CONV_EXCL;GEM_PATH"
 
 # reset to default in case it was set in a parent
@@ -110,9 +106,9 @@ if status is-interactive
 end
 
 set -e fish_user_paths
-set -p PATH ~/.local/bin $my_config_dir/bin ~/.bun/bin ~/.local/share/pnpm/bin ~/go/bin
+set -p PATH ~/.local/bin $the_dir/config/bin ~/.bun/bin ~/.local/share/pnpm/bin ~/go/bin
 if set -q MSYSTEM
-    set -p PATH $my_config_dir/bin.msys2
+    set -p PATH $the_dir/config/bin.msys2
 end
 
 set -x E_EDITOR "x code"
