@@ -15,7 +15,7 @@ idem_symlink_native $my_config_dir/settings.json $vscode_config_dir/User/setting
 idem_symlink_native $my_config_dir/keybindings.json $vscode_config_dir/User/keybindings.json
 idem_symlink_native $my_config_dir/snippets $vscode_config_dir/User/snippets
 
-idem_symlink_native $my_config_dir/lazygit/config.yml ~/.config/lazygit/config.yml
+idem_symlink_native $my_config_dir/lazygit-config.yml ~/.config/lazygit/config.yml
 
 idem_symlink $my_config_dir/fish/functions ~/.config/fish/functions
 
