@@ -107,11 +107,6 @@ end
 
 set -e fish_user_paths
 set -p PATH ~/.local/bin $the_dir/config/bin ~/.bun/bin ~/.local/share/pnpm/bin ~/go/bin
-if set -q MSYSTEM
-    set -p PATH $the_dir/config/bin.msys2
-end
-
-set -x E_EDITOR "x code"
 
 if test -e /c/Users/Tom
     set -x tom /c/Users/Tom
