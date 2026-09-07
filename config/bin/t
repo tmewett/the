@@ -1,0 +1,21 @@
+#!/usr/bin/env fish
+if set -q argv[1]
+    set set_title_cmd (string escape -- echo -n \e"]0;$argv[1]  $(_reversed_prompt_cwd)"\e\\)
+    set argv_cmd (string escape -- $argv)
+    set cmd fish -c "$set_title_cmd; $argv_cmd"
+    if set -q MSYSTEM
+        echo "rm /tmp/t_cmd; $set_title_cmd; $argv_cmd" > /tmp/t_cmd
+        set msys_cmd C:\\msys64\\msys2_shell.cmd -defterm -no-start -here -c "exec fish /tmp/t_cmd"
+    end
+end
+if w -q wt
+    w wt nt -p MSYS2 $msys_cmd
+else if type -q gnome-terminal
+    x gnome-terminal -- $cmd
+else if type -q alacritty
+    if set -q argv[1]
+        x alacritty -T "$argv[1]  $(_reversed_prompt_cwd)" -e $argv
+    else
+        x alacritty
+    end
+end
