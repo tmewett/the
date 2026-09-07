@@ -25,7 +25,7 @@ if not set -q MSYSTEM
 end
 
 if set -q MSYSTEM
-    idem_symlink_native $my_config_dir/keymapper.conf $USERPROFILE/keymapper.conf
+    idem_rm_symlink $USERPROFILE/keymapper.conf
 else
-    idem_symlink $my_config_dir/keymapper.conf ~/.config/keymapper.conf
+    idem_rm_symlink ~/.config/keymapper.conf
 end
