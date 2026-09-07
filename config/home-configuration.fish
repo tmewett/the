@@ -17,7 +17,7 @@ idem_symlink_native $my_config_dir/snippets $vscode_config_dir/User/snippets
 
 idem_symlink_native $my_config_dir/lazygit-config.yml ~/.config/lazygit/config.yml
 
-idem_symlink $my_config_dir/fish/functions ~/.config/fish/functions
+idem_rm_symlink ~/.config/fish/functions
 
 # ControlMaster is broken on Windows
 if not set -q MSYSTEM
