@@ -10,24 +10,28 @@ oo::class create app {
     }
     method tick {} {
         my update
+        after 1000 "[self] tick"
         if {$remainingS > 0} {
-            after 1000 "[self] tick"
         } else {
-            .entry state !disabled
-            .entry selection range 0 end
             focus .entry
         }
     }
     method set {} {
         set endTime [clock add [clock seconds] [.entry get] seconds]
         my tick
-        .entry state disabled
         wm iconify .
     }
     method update {} {
         set remainingS [expr {$endTime - [clock seconds]}]
         puts $remainingS
-        set display "[format %02u [expr {$remainingS / 60}]]:[format %02u [expr {$remainingS % 60}]]"
+        if {$remainingS >= 0} {
+            set display "[format %02u [expr {$remainingS / 60}]]:[format %02u [expr {$remainingS % 60}]]"
+            .entry state disabled
+        } else {
+            set display "-[format %02u [expr {-$remainingS / 60}]]:[format %02u [expr {-$remainingS % 60}]]"
+            .entry state !disabled
+            .entry selection range 0 end
+        }
         .time configure -text $display
         wm title . $display
     }
