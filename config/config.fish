@@ -106,7 +106,7 @@ if status is-interactive
 end
 
 set -e fish_user_paths
-set -p PATH ~/.local/bin $the_dir/config/bin ~/.bun/bin ~/.local/share/pnpm/bin ~/go/bin
+set -p PATH ~/.local/bin $the_dir/config/bin $the_dir/idem ~/.bun/bin ~/.local/share/pnpm/bin ~/go/bin
 
 if test -e /c/Users/Tom
     set -x tom /c/Users/Tom
