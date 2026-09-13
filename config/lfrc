@@ -11,3 +11,4 @@ map xe $x codium "$f"
 map xg &t w lazygit
 set hidden
 set mouse
+set relativenumber
