@@ -21,6 +21,7 @@
   esc  caps)
 
 (deflayermap (triangle)
+  9    A-bspc
   e    bck
   r    fwd
   y    C-del
