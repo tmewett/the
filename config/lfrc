@@ -9,6 +9,7 @@ map R     reload
 map T     &fish -c t
 map xe    $x codium "$f"
 map xg    &t w lazygit
+map \#    push :cd<space>
 set hidden
 set mouse
 set relativenumber
