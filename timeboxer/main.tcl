@@ -1,41 +1,51 @@
 package require Tk
 
+proc mmss {seconds} {
+    if {$seconds >= 0} {
+        return "[format %02u [expr {$seconds / 60}]]:[format %02u [expr {$seconds % 60}]]"
+    } else {
+        return "-[format %02u [expr {-$seconds / 60}]]:[format %02u [expr {-$seconds % 60}]]"
+    }
+}
+
 oo::class create app {
-    variable endTime
+    variable taskEndTime sessionEndTime
     constructor {} {
-        set endTime false
+        set taskEndTime false
+        my restartSession
+        grid [ttk::label .sessionTime -font "normal 48" -text "00:00"]
         grid [ttk::entry .entry]
+        grid [ttk::label .taskTime -font "normal 48" -text "00:00"]
         bind . <Key-Escape> "[self] esc"
+        bind . <Control-Key-r> "[self] restartSession"
         bind .entry <Key-Return> "[self] set"
         focus .entry
-        grid [ttk::label .time -font "normal 48" -text "00:00"]
+    }
+    method restartSession {} {
+        set sessionEndTime [clock add [clock seconds] 60 minutes]
     }
     method tick {} {
         my update
-        if {$endTime} {
-            after 500 "[self] tick"
-        }
+        after 500 "[self] tick"
     }
     method esc {} {
-        set endTime false
+        set taskEndTime false
         my update
         focus .entry
         .entry selection range 0 end
     }
     method set {} {
-        set endTime [clock add [clock seconds] [.entry get] minutes]
-        my tick
+        set taskEndTime [clock add [clock seconds] [.entry get] minutes]
         wm iconify .
     }
     method update {} {
-        if {$endTime} {
-            set ms [clock milliseconds]
-            set remainingS [expr {$endTime - $ms / 1000}]
+        set ms [clock milliseconds]
+        if {$taskEndTime} {
+            set remainingS [expr {$taskEndTime - $ms / 1000}]
+            set display [mmss $remainingS]
             if {$remainingS >= 0} {
-                set display "[format %02u [expr {$remainingS / 60}]]:[format %02u [expr {$remainingS % 60}]]"
                 set title $display
             } else {
-                set display "-[format %02u [expr {-$remainingS / 60}]]:[format %02u [expr {-$remainingS % 60}]]"
                 if {$ms % 1000 >= 500} {
                     set title "Timer done!"
                 } else {
@@ -48,12 +58,13 @@ oo::class create app {
             set title "Timeboxer"
             .entry state !disabled
         }
-        .time configure -text $display
+        .sessionTime configure -text [mmss [expr {$sessionEndTime - $ms / 1000}]]
+        .taskTime configure -text $display
         wm title . $title
     }
 }
 
 set appO [app new]
-$appO update
+$appO tick
 
 tkwait window .
