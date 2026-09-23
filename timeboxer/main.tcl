@@ -41,25 +41,26 @@ oo::class create app {
     method update {} {
         set ms [clock milliseconds]
         if {$taskEndTime} {
-            set remainingS [expr {$taskEndTime - $ms / 1000}]
-            set display [mmss $remainingS]
-            if {$remainingS >= 0} {
-                set title $display
-            } else {
-                if {$ms % 1000 >= 500} {
-                    set title "Timer done!"
-                } else {
-                    set title $display
-                }
-            }
+            set taskRemS [expr {$taskEndTime - $ms / 1000}]
+            set taskDisplay [mmss $taskRemS]
             .entry state disabled
         } else {
-            set display "00:00"
-            set title "Timeboxer"
+            set taskRemS 0
+            set taskDisplay "00:00"
             .entry state !disabled
         }
-        .sessionTime configure -text [mmss [expr {$sessionEndTime - $ms / 1000}]]
-        .taskTime configure -text $display
+        set sessionRemS [expr {$sessionEndTime - $ms / 1000}]
+        set sessionDisplay [mmss $sessionRemS]
+        set title "$taskDisplay ($sessionDisplay)"
+        if {$ms % 1000 >= 500} {
+            if {$sessionRemS < 0} {
+                set title "Session over!"
+            } elseif {$taskRemS < 0} {
+                set title "Task over!"
+            }
+        }
+        .sessionTime configure -text $sessionDisplay
+        .taskTime configure -text $taskDisplay
         wm title . $title
     }
 }
