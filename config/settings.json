@@ -85,5 +85,6 @@
     },
     "dance.systemClipboardRegister": null,
     "workbench.editor.enablePreview": false,
-    "workbench.colorTheme": "Dark Modern"
+    "workbench.colorTheme": "Dark Modern",
+    "editor.wrappingIndent": "deepIndent"
 }
