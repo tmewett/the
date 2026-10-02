@@ -1,4 +1,5 @@
 import os.path
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -6,8 +7,8 @@ from typing import Any
 class BuildContext:
     def __init__(self):
         self._products = {}
-    def define(self, *args):
-        p = Target(*args)
+    def define(self, *args, **kwargs):
+        p = Target(*args, **kwargs)
         self._products[p.output_name] = p
 
 @dataclass
@@ -28,29 +29,29 @@ def run(define_build):
     build_dir = Path("anvil-build")
     bcx = BuildContext()
     define_build(bcx)
+    deps_to_build = {}
+    rdeps = defaultdict(lambda: [])
+    to_build = []
     def process(outp):
-        non_source_inputs = [inp for inp in outp.inputs if isinstance(inp, Target)]
-        deps_to_build[outp] = len(non_source_inputs)
+        non_source_inputs = [bcx._products[inp_name] for inp_name in outp.inputs if inp_name in bcx._products]
+        deps_to_build[id(outp)] = len(non_source_inputs)
         if not non_source_inputs:
-            to_build.append(out)
+            to_build.append(outp)
             return
         for inp in non_source_inputs:
-            if inp in rdeps[inp]:
-                rdeps[inp].append(outp)
-            else:
-                rdeps[inp] = [outp]
-            if inp not in deps_to_build:
+            rdeps[id(inp)].append(outp)
+            if id(inp) not in deps_to_build:
                 process(inp)
-    targets = ["dep"]
-    to_build = [bcx._products[target_name] for target_name in targets]
+    process(bcx._products["hello"])
     while to_build:
         t = to_build.pop(0)
+        print(t)
         module, var = t.function.rsplit(".", maxsplit=1)
         output_path = build_dir / "out" / t.output_name
         output_path.parent.mkdir(parents=True, exist_ok=True)
         acx = ActionContext(output_path)
         getattr(__import__(module), var)(acx)
-        # for rd in rdeps:
-        #     rd.deps_to_build -= 1
-        #     if rd.deps_to_build == 0:
-        #         to_build.append(rd)
+        for rd in rdeps[id(t)]:
+            deps_to_build[id(rd)] -= 1
+            if deps_to_build[id(rd)] == 0:
+                to_build.append(rd)

@@ -5,10 +5,10 @@ def define_build(bcx):
         "dep",
         "anvil.touch",
     )
-    # bcx.define(
-    #     "hello",
-    #     "anvil.touch",
-    #     inputs=["dep"],
-    # )
+    bcx.define(
+        "hello",
+        "anvil.touch",
+        inputs=["dep"],
+    )
 
 anvil.run(define_build)
