@@ -1,10 +1,14 @@
 import anvil
 
 def define_build(bcx):
-    hello = anvil.Target(
-        "hello",
+    bcx.define(
+        "dep",
         "anvil.touch",
     )
-    bcx.targets = [hello]
+    # bcx.define(
+    #     "hello",
+    #     "anvil.touch",
+    #     inputs=["dep"],
+    # )
 
 anvil.run(define_build)
