@@ -4,40 +4,40 @@
 
 errors=0
 
-if ! type git >/dev/null 2>&1; then
+if ! w -q git >/dev/null 2>&1; then
     echo "'git' not found."
     exit 1
 fi
 
-if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+if ! w git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     echo "Not inside a Git repository."
     exit 1
 fi
 
-if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+if [ -n "$(w git ls-files --others --exclude-standard)" ]; then
     echo "Working directory has untracked files."
     errors=1
 fi
 
-if ! git diff-index --quiet HEAD --; then
+if ! w git diff-index --quiet HEAD --; then
     echo "Working directory is not clean."
     errors=1
 fi
 
-if git stash list | grep -q .; then
+if w git stash list | grep -q .; then
     echo "There are stash entries."
     errors=1
 fi
 
-for branch in $(git branch --format="%(refname:short)"); do
-    if ! git rev-parse --abbrev-ref "$branch"@{u} >/dev/null 2>&1; then
+for branch in $(w git branch --format="%(refname:short)"); do
+    if ! w git rev-parse --abbrev-ref "$branch"@{u} >/dev/null 2>&1; then
         echo "Branch '$branch' does not have an upstream configured."
         errors=1
         continue
     fi
 
     # Check for unpushed commits
-    if [ "$(git rev-list --count "$branch"@{u}..$branch)" -ne 0 ]; then
+    if [ "$(w git rev-list --count "$branch"@{u}..$branch)" -ne 0 ]; then
         echo "Branch '$branch' has unpushed commits."
         errors=1
     fi
