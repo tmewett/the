@@ -14,6 +14,7 @@ class BuildContext:
 @dataclass
 class ActionContext:
     output: Any
+    inputs: Any
 
 @dataclass
 class Target:
@@ -42,15 +43,14 @@ def run(define_build):
             rdeps[id(inp)].append(outp)
             if id(inp) not in deps_to_build:
                 process(inp)
-    process(bcx._products["hello"])
+    process(bcx._products["msg.rev"])
     while to_build:
         t = to_build.pop(0)
-        print(t)
-        module, var = t.function.rsplit(".", maxsplit=1)
+        resolved_inputs = {p: Path(p).resolve(strict=True) for p in t.inputs}
         output_path = build_dir / "out" / t.output_name
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        acx = ActionContext(output_path)
-        getattr(__import__(module), var)(acx)
+        acx = ActionContext(output_path, resolved_inputs)
+        t.function(acx)
         for rd in rdeps[id(t)]:
             deps_to_build[id(rd)] -= 1
             if deps_to_build[id(rd)] == 0:
