@@ -30,11 +30,6 @@ end
 
 set homesteads /home/steads
 
-if set -q SUDO_USER
-    set USER $SUDO_USER
-    set HOME ~$USER
-end
-
 if set -q _flag_help
     echo "\
 Usage: homestead [OPTIONS] [-n NAME] [COMMAND...]
@@ -65,20 +60,6 @@ set bwrap_args \
     --die-with-parent \
     --bind / / \
     --dev-bind /dev /dev \
-
-if not set -q XDG_CONFIG_DIR
-    set XDG_CONFIG_DIR $HOME/.config
-end
-
-# Bind PulseAudio directory so we can get audio.
-if test -d $XDG_CONFIG_DIR/pulse
-    set -a bwrap_args --bind $XDG_CONFIG_DIR/pulse $XDG_CONFIG_DIR/pulse
-end
-
-set cwd (pwd)
-if not set -q _flag_no_cwd
-    set -a bwrap_args --bind $cwd $cwd
-end
 
 if set -q _flag_name
     set upperdir $homesteads/$USER/$_flag_name
@@ -162,15 +143,28 @@ else
         --ro-bind $HOME $HOME
 end
 
+if not set -q XDG_CACHE_HOME; set XDG_CACHE_HOME $HOME/.cache; end
+if not set -q XDG_DATA_HOME; set XDG_DATA_HOME $HOME/.local/share; end
+
+set passthrough $XDG_CACHE_HOME $XDG_DATA_HOME/fish
+
+set cwd (pwd)
+if not set -q _flag_no_cwd
+    set -a passthrough $cwd
+end
+
+for dir in $passthrough
+    if test -d $dir
+        set -a bwrap_args --bind $dir $dir
+    end
+end
+
 if test (count $argv) -gt 0
     set run_command $argv[1..]
 else
     set run_command (status current-filename) --shell
 end
 
-echo sudo -u $USER bwrap \
-    $bwrap_args \
-    $run_command
-sudo -u $USER bwrap \
+bwrap \
     $bwrap_args \
     $run_command
