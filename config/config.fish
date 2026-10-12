@@ -33,6 +33,7 @@ if status is-interactive
     abbr -a -- g t w lazygit
     abbr -a -- S sudo pacman -S --needed
     abbr -a -- Rn sudo pacman -Rn
+    abbr -a -- Dd sudo pacman -D --asdeps
     fish_hybrid_key_bindings
     function fish_user_key_bindings
         if type -q fzf
