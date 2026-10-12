@@ -62,6 +62,7 @@ if status is-interactive
         chmod -R 777 $argv[1]
         and rm -r $argv[1]
     end
+    function fish_greeting; end
     function fish_title
         echo -n $_ ' '
         _reversed_prompt_cwd
