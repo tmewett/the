@@ -35,21 +35,19 @@ if status is-interactive
     abbr -a -- Rn sudo pacman -Rn
     abbr -a -- Dd sudo pacman -D --asdeps
     fish_hybrid_key_bindings
-    function fish_user_key_bindings
-        if type -q fzf
-            if test -e /ucrt64/bin/fzf
-                source /ucrt64/share/fish/vendor_functions.d/fzf_key_bindings.fish
-            end
-            fzf_key_bindings
+    if type -q fzf
+        if test -e /ucrt64/bin/fzf
+            source /ucrt64/share/fish/vendor_functions.d/fzf_key_bindings.fish
         end
-        function _fzf_open
-            set file (fzf --height=40%)
-            and o $file
-            commandline -f repaint
-        end
-        bind \co _fzf_open
-        bind -M insert \co _fzf_open
+        fzf_key_bindings
     end
+    function _fzf_open
+        set file (fzf --height=40%)
+        and o $file
+        commandline -f repaint
+    end
+    bind \co _fzf_open
+    bind -M insert \co _fzf_open
     function sudo
         command sudo ~/exec-nopasswd $argv
     end
