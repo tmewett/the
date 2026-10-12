@@ -1,0 +1,4 @@
+#!/usr/bin/env fish
+echo -n "#!/usr/bin/env fish" > $argv[1]
+and chmod +x $argv[1]
+and e $argv[1]
