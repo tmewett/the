@@ -53,18 +53,6 @@ if status is-interactive
     function sudo
         command sudo ~/exec-nopasswd $argv
     end
-    function d -a name
-        if test -z "$name"
-            ls ~/.config/d
-            return
-        end
-        set dir "$(cat ~/.config/d/$name)"
-        and cd $dir
-    end
-    function dsave -a name
-        mkdir -p ~/.config/d
-        and echo -n $PWD > ~/.config/d/$name
-    end
     function c --wraps=cd
         cd $argv
         and ls
