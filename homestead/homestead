@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-argparse -n homestead -s "h/help" "u" "s" "no-cwd" -- $argv
+argparse -n homestead -s "h/help" "i=+" "u" "s" "no-cwd" -- $argv
 or exit 1
 
 if set -q _flag_help
@@ -31,6 +31,14 @@ if not set -q XDG_DATA_HOME; set XDG_DATA_HOME $HOME/.local/share; end
 
 set passthrough $XDG_CACHE_HOME $XDG_DATA_HOME/fish
 
+for included in $_flag_i
+    if test $included[1] != "/"
+        set -a passthrough "$(path normalize -- "$(pwd)/$included")"
+    else
+        set -a passthrough $included
+    end
+end
+
 set cwd (pwd)
 if not set -q _flag_no_cwd
     set -a passthrough $cwd
@@ -42,6 +50,4 @@ for dir in $passthrough
     end
 end
 
-bwrap \
-    $bwrap_args \
-    -- $argv
+bwrap $bwrap_args -- $argv
