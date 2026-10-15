@@ -3,3 +3,4 @@ git:
   autoRefresh: false
 gui:
   scrollHeight: 10
+  showFileTree: false
