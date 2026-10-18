@@ -74,8 +74,8 @@ end
 set -e fish_user_paths
 set -p PATH ~/.local/bin $the_dir/config/bin $the_dir/idem $the_dir/homestead ~/.bun/bin ~/.local/share/pnpm/bin ~/go/bin
 
-if test -e /c/Users/Tom
-    set -x tom /c/Users/Tom
+if test -e /c/Users/tom
+    set -x tom /c/Users/tom
 end
 
 # rustup
