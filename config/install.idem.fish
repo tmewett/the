@@ -3,8 +3,10 @@ if not set -q USERPROFILE; set USERPROFILE ~; end
 
 if set -q MSYSTEM
     set vscode_config_dir $USERPROFILE/scoop/persist/vscodium/data/user-data
+    set lazygit_dir $USERPROFILE/AppData/Local/lazygit
 else
     set vscode_config_dir $APPDATA/Code
+    set lazygit_dir ~/.config/lazygit
 end
 
 if not set -q MSYSTEM
@@ -15,7 +17,7 @@ idem_symlink_native $the_dir/config/settings.json $vscode_config_dir/User/settin
 idem_symlink_native $the_dir/config/keybindings.json $vscode_config_dir/User/keybindings.json
 idem_symlink_native $the_dir/config/snippets $vscode_config_dir/User/snippets
 
-idem_symlink_native $the_dir/config/lazygit-config.yml ~/.config/lazygit/config.yml
+idem_symlink_native $the_dir/config/lazygit-config.yml $lazygit_dir/config.yml
 
 idem_symlink_native $the_dir/config/lfrc $APPDATA/lf/lfrc
 
