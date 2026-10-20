@@ -42,6 +42,10 @@ if status is-interactive
         cd $argv
         and ls
     end
+    function mkcd
+        mkdir -p $argv[1]
+        and cd $argv[1]
+    end
     function nuke
         # -R also makes chmod ignores symlinks, so we can't use find -exec chmod
         chmod -R 777 $argv[1]
