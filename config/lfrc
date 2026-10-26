@@ -3,6 +3,7 @@ map <c-n> &fish -c 't lf'
 map +     $chmod +x "$fx"
 map Dp    delete
 map e     $x codium "$f"
+map M     mark-remove
 map o     push &touch<space>
 map O     push &mkdir<space>
 map R     reload
