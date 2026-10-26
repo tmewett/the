@@ -27,9 +27,3 @@ idem_rm_symlink ~/.config/fish/functions
 if not set -q MSYSTEM
     idem_symlink $the_dir/config/ssh_config ~/.ssh/config
 end
-
-if set -q MSYSTEM
-    idem_rm_symlink $USERPROFILE/keymapper.conf
-else
-    idem_rm_symlink ~/.config/keymapper.conf
-end
