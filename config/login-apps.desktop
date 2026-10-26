@@ -1,0 +1,4 @@
+[Desktop Entry]
+Type=Application
+Name=Start Login Apps
+Exec=fish -c start-login-apps

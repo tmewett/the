@@ -1,0 +1,5 @@
+#!/usr/bin/env fish
+x tclsh $the_dir/timeboxer/main.tcl
+t fish -c 'cd ~/files/the/config; while true; sudo kanata; end'
+cd ~
+t lf

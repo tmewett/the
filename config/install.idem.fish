@@ -7,6 +7,7 @@ if set -q MSYSTEM
 else
     set vscode_config_dir $APPDATA/Code
     set lazygit_dir ~/.config/lazygit
+    idem_symlink $the_dir/config/login-apps.desktop ~/.local/share/applications/login-apps.desktop
 end
 
 if not set -q MSYSTEM
