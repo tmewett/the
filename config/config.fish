@@ -77,6 +77,9 @@ end
 
 set -e fish_user_paths
 set -p PATH ~/.local/bin $the_dir/config/bin $the_dir/idem $the_dir/homestead ~/.bun/bin ~/.local/share/pnpm/bin ~/go/bin
+if set -q MSYSTEM
+    set -p PATH $the_dir/config/msys2.bin
+end
 
 if test -e /c/Users/tom
     set -x tom /c/Users/tom
