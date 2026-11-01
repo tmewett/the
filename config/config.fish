@@ -31,9 +31,12 @@ function _reversed_prompt_cwd
 end
 if status is-interactive
     abbr -a -- g t w lazygit
-    abbr -a -- S sudo pacman -S --needed
-    abbr -a -- Rn sudo pacman -Rn
-    abbr -a -- Dd sudo pacman -D --asdeps
+    if not set -q MSYSTEM
+        set -l sudo_cmd sudo
+    end
+    abbr -a -- S $sudo_cmd pacman -S --needed
+    abbr -a -- Rn $sudo_cmd pacman -Rn
+    abbr -a -- Dd $sudo_cmd pacman -D --asdeps
     fish_hybrid_key_bindings
     function sudo
         command sudo ~/exec-nopasswd $argv
