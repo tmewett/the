@@ -1,0 +1,2 @@
+#!/usr/bin/env fish
+/ucrt64/bin/lf -command 'set shell C:/msys64/usr/bin/bash.exe'\n'set shellflag -c'
