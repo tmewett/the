@@ -1,6 +1,6 @@
 # My portable config. System-specific goes in the real config.fish
 
-set -x MSYS2_ENV_CONV_EXCL "$MSYS2_ENV_CONV_EXCL;GEM_PATH"
+set -x MSYS2_ENV_CONV_EXCL "*"
 
 # reset to default in case it was set in a parent
 set -e MSYS2_ARG_CONV_EXCL
